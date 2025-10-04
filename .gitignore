@@ -9,3 +9,5 @@ dist
 build
 tmp
 .env
+/siyuan-master/
+/highlight_assistant/
