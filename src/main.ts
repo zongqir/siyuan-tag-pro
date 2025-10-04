@@ -7,18 +7,18 @@ import {
   TagClickManager,
   TagManager,
 } from './tag'
+import Logger from './utils/logger'
 
 let plugin = null
 let tagManager: TagManager | null = null
 let tagClickManager: TagClickManager | null = null
 
 export function usePlugin(pluginProps?: Plugin): Plugin {
-  console.log('usePlugin', pluginProps, plugin)
   if (pluginProps) {
     plugin = pluginProps
   }
   if (!plugin && !pluginProps) {
-    console.error('need bind plugin')
+    Logger.error('need bind plugin')
   }
   return plugin
 }
@@ -29,14 +29,14 @@ export function init(pluginInstance: Plugin) {
   usePlugin(pluginInstance)
 
   const div = document.createElement('div')
-  div.classList.toggle('plugin-sample-vite-vue-app')
+  div.classList.toggle('siyuan-tag-pro-app')
   div.id = pluginInstance.name
   app = createApp(App)
   app.mount(div)
   document.body.appendChild(div)
 
   // Initialize tag modules
-  console.log('🚀 Initializing tag modules...')
+  Logger.log('🚀 Initializing tag modules...')
   tagManager = new TagManager()
   tagClickManager = new TagClickManager()
 
@@ -46,7 +46,7 @@ export function init(pluginInstance: Plugin) {
   // Initialize tag click manager (for searching tags)
   tagClickManager.initialize()
 
-  console.log('✅ Tag modules initialized')
+  Logger.log('✅ Tag modules initialized')
 }
 
 export function destroy() {

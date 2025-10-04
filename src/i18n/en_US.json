@@ -1,3 +1,5 @@
 {
-  "addTopBarIcon": "PluginSampleViteVue"
+  "name": "Tag Pro",
+  "description": "Quick tag insertion and intelligent tag search",
+  "addTopBarIcon": "Tag Pro"
 }

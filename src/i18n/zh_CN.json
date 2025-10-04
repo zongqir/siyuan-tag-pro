@@ -1,3 +1,5 @@
 {
-  "addTopBarIcon": "PluginSampleViteVue"
+  "name": "标签增强",
+  "description": "快速添加标签、智能搜索标签内容",
+  "addTopBarIcon": "标签增强"
 }

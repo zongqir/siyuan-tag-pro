@@ -7,6 +7,7 @@ import {
   destroy,
   init,
 } from '@/main'
+import Logger from '@/utils/logger'
 import "@/index.scss"
 
 let PluginInfo = {
@@ -15,13 +16,13 @@ let PluginInfo = {
 try {
   PluginInfo = PluginInfoString
 } catch (error) {
-  console.log('Plugin info parse error: ', error)
+  Logger.error('Plugin info parse error: ', error)
 }
 const {
   version,
 } = PluginInfo
 
-export default class PluginSample extends Plugin {
+export default class SiyuanTagPro extends Plugin {
   // Run as mobile
   public isMobile: boolean
   // Run in browser
@@ -53,16 +54,18 @@ export default class PluginSample extends Plugin {
       this.isElectron = false
     }
 
-    console.log('Plugin loaded, the plugin is ', this)
+    Logger.info('标签增强插件已加载', `v${version}`)
 
     init(this)
   }
 
   onunload() {
+    Logger.info('标签增强插件已卸载')
     destroy()
   }
 
   openSetting() {
-    window._sy_plugin_sample.openSetting()
+    // 插件设置
+    Logger.log('打开插件设置')
   }
 }
