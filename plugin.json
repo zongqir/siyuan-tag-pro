@@ -1,7 +1,7 @@
 {
-  "name": "plugin-sample-vite-vue",
-  "author": "wetoria",
-  "url": "https://github.com/Wetoria/plugin-sample-vite-vue",
+  "name": "siyuan-tag-pro",
+  "author": "Wetoria",
+  "url": "https://github.com/Wetoria/siyuan-tag-pro",
   "version": "0.0.1",
   "minAppVersion": "2.10.14",
   "backends": [
@@ -11,14 +11,14 @@
     "all"
   ],
   "displayName": {
-    "default": "plugin-sample-vite-vue",
-    "en_US": "plugin-sample-vite-vue",
-    "zh_CN": "plugin-sample-vite-vue"
+    "default": "Tag Pro - Enhanced Tag Management",
+    "en_US": "Tag Pro - Enhanced Tag Management",
+    "zh_CN": "标签增强 - 快速标注与搜索"
   },
   "description": {
-    "default": "plugin-sample-vite-vue",
-    "en_US": "plugin-sample-vite-vue",
-    "zh_CN": "plugin-sample-vite-vue"
+    "default": "A powerful tag management plugin for SiYuan. Quick tag insertion with 8 preset tags, click to search, and support multiple search scopes.",
+    "en_US": "A powerful tag management plugin for SiYuan. Quick tag insertion with 8 preset tags, click to search, and support multiple search scopes.",
+    "zh_CN": "强大的标签管理插件，支持快速添加8种预设标签、点击标签智能搜索、多范围搜索，助力知识管理。"
   },
   "readme": {
     "default": "README.md",
@@ -28,5 +28,13 @@
   "funding": {
     "custom": []
   },
-  "keywords": []
+  "keywords": [
+    "tag",
+    "label",
+    "search",
+    "annotation",
+    "标签",
+    "标注",
+    "搜索"
+  ]
 }

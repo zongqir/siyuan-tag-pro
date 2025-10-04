@@ -1,147 +1,139 @@
-# Siyuan Plugin Template - Vite & Vue3
+# SiYuan Tag Pro - Enhanced Tag Management Plugin
 
 [简体中文](./README_zh_CN.md)
 
-> Consistent with [siyuan/plugin-sample](https://github.com/siyuan-note/plugin-sample).
+A powerful tag management plugin for SiYuan Note, providing quick tag insertion and intelligent search capabilities.
 
-1. Use Vite for packaging
-2. Use Vue3 for development
-3. Provides a github action template to automatically generate package.zip and upload to new release
-4. Provides a script to auto create tag and release. [link](#release-script)
+## ✨ Key Features
 
-> [!NOTE]
->
-> Before your start, you need install [NodeJS](https://nodejs.org/en/download) and [pnpm](https://pnpm.io/installation) first.
+### 🏷️ Quick Tag Insertion
 
-> [!WARNING]
->
-> For your first attempt, please do not modify anything. Load the plugin template in Siyuan as described below before making any changes.
->
-> For example, deleting README_zh_CN.md will also cause the plugin to fail to load.
+- **Easy Operation**: Right-click/long-press on a block in read-only mode to quickly add tags
+- **8 Preset Tags**:
+  - ⭐ Important - Mark important content
+  - 🔥 Difficult - Mark challenging knowledge points
+  - ⚡ Mistake - Record error-prone areas
+  - 💭 Memory - Content that needs to be memorized
+  - 🔍 Explore - Content for further research
+  - ✅ Check - Content that needs review
+  - ✍️ Practice - Knowledge points for practice
+  - ❓ Question - Content with questions
+- **Safety Protection**: Multiple checks ensure tags are only added in safe states
+- **Style Protection**: Automatically detects complex styles to avoid format damage
 
-## Get started
+### 🔍 Intelligent Tag Search
 
-1. Use the `Use the template` button to make a copy of this repo as template.  
-> [!WARNING]
->
-> That the repository name should match the plugin name, and the default branch must be `main`.
+- **One-Click Search**: Click any tag to instantly display all content containing that tag
+- **Multiple Search Scopes**:
+  - 📄 Current Doc - Search only the current document
+  - 📁 Sub Docs - Search current document and all its subdocuments
+  - 📚 Notebook - Search the entire notebook
+- **Grouped by Document**: Search results are intelligently grouped by document
+- **Quick Navigation**: Click search results to instantly jump to the corresponding block
+- **Tag Switching**: Quickly switch to other tags in the search panel
 
+### 🎨 Beautiful Interface
 
-2. Use `git clone` to clone the copied repo to your computer.
-3. Use `pnpm i` to install the dependencies.
+- **Modern Design**: Built with Tailwind CSS, clean and elegant interface
+- **Smooth Animations**: Rich transition animation effects for a smooth user experience
+- **Responsive Layout**: Perfect support for desktop and mobile devices
+- **Theme Adaptation**: Automatically adapts to SiYuan's theme colors
 
-4. Copy the `.env.example` file as `.env`, set the `VITE_SIYUAN_WORKSPACE_PATH` to your SiYuan workspace.
+## 📦 Installation
 
+### Method 1: Install from Marketplace (Recommended)
 
-> [!TIP]
->
-> If you prefer not to package the project directly into the workspace, you can use a `symbolic link` instead.
->
-> Writing directly into the Siyuan workspace allows you to sync via Siyuan's sync feature to other devices, while using a symbolic link will not be included in the sync.
->
-> This template does not provide specific details about symbolic links. For related information, please refer to [plugin-sample-vite-svelte](https://github.com/siyuan-note/plugin-sample-vite-svelte).
+1. Open SiYuan Note
+2. Go to `Settings` → `Marketplace` → `Plugins`
+3. Search for "Tag Pro"
+4. Click `Download` and enable the plugin
 
-5. Use `pnpm dev` to run the project, you will see info like below
+### Method 2: Manual Installation
 
-  ```
+1. Download the latest `package.zip` from [Releases](https://github.com/Wetoria/siyuan-tag-pro/releases)
+2. Extract to SiYuan's plugin directory `<workspace>/data/plugins/`
+3. Restart SiYuan Note
+4. Enable the plugin in `Settings` → `Marketplace` → `Downloaded`
 
-  > plugin-sample-vite-vue@0.0.1 dev /path/to/your/plugin-sample-vite-vue
-  > vite build --watch
+## 🚀 Usage
 
-  mode=> production
-  env=> {
-    VITE_SIYUAN_WORKSPACE_PATH: '/path/to/siyuan/workspace',
-    VITE_DEV_DIST_DIR: ''
-  }
+### Adding Tags
 
-  Siyuan workspace path is set:
-  /path/to/siyuan/workspace
+1. Lock the document (enter read-only mode)
+2. Right-click (or long-press) on the block where you want to add a tag
+3. Select the tag you want to add
+4. The tag will be automatically added to the end of the block
 
-  Plugin will build to:
-  # ✅ the plugin will build into here
-  /path/to/siyuan/workspace/data/plugins/plugin-sample-vite-vue
+### Searching Tags
 
-  isWatch=> true
-  distDir=> /path/to/siyuan/workspace/data/plugins/plugin-sample-vite-vue
-  vite v6.3.5 building for production...
+1. Click any tag in the document
+2. The search panel automatically opens, showing all content containing that tag
+3. Use the scope selector at the top to switch search ranges
+4. Click search results to jump to the corresponding location
+5. Use the tag dropdown menu to switch to other tags
 
-  watching for file changes...
+## ⚙️ Development
 
-  build started...
-  ✓ 26 modules transformed.
-  rendering chunks (1)...LiveReload enabled
-  ../../Siyuan-plugin/data/plugins/plugin-sample-vite-vue/index.css    1.08 kB │ gzip:  0.41 kB
-  ../../Siyuan-plugin/data/plugins/plugin-sample-vite-vue/index.js   198.60 kB │ gzip: 46.59 kB
-  [vite-plugin-static-copy] Copied 7 items.
-  built in 502ms.
-  ```
+### Requirements
 
+- Node.js 18+
+- pnpm 10+
 
-   If successed, restart your siyuan, and you will find the plugin in `Siyuan - Settings - Marketplace`, named as `plugin-sample-vite-vue`.
-6. Enable the plugin, and check the `App.vue` file to start your development.
-   
-   This file contains some example codes.
+### Development Steps
 
+```bash
+# Clone repository
+git clone https://github.com/Wetoria/siyuan-tag-pro.git
+cd siyuan-tag-pro
 
-> [!TIP]
->
-> More plugin code examples, please check [siyuan/plugin-sample/src/index.ts](https://github.com/siyuan-note/plugin-sample/blob/main/src/index.ts)
+# Install dependencies
+pnpm install
 
+# Copy configuration file
+cp .env.example .env
 
+# Edit VITE_SIYUAN_WORKSPACE_PATH in .env to your SiYuan workspace path
 
-## List on the Marketplace
-
-### Use Github Action
-
-1. You can create a new tag, use your new version number as the `Tag version` in your local.
-2. Then push the tag to Github. The Github Action will create a new Release for you.
-
-> [!TIP]
->
-> <div id="release-script"></div>This template provided a script to auto create tag and release. You can use `pnpm release` to create a patch version.
->
-> You can add `--mode=manual|patch|minor|major` arg to set release mode, or run with arg like `pnpm release:manual`. 
-> 
-> All the scripts please see the `package.json` file.
-
-The github action is included in this sample, you can use it to publish your new realse to marketplace automatically:
-
-1. In your repo setting page `https://github.com/OWNER/REPO/settings/actions`, down to Workflow Permissions and open the configuration like this:
-
-![img](./asset/action.png)
-
-2. Push a tag in the format `v*` and github will automatically create a new release with new bulit package.zip
-3. By default, it will only publish a pre-release, if you don't think this is necessary, change the settings in release.yml
-
-```yaml
-- name: Release
-    uses: ncipollo/release-action@v1
-    with.
-        allowUpdates: true
-        artifactErrorsFailBuild: true
-        artifacts: 'package.zip'
-        token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true # change this to false
+# Start development mode
+pnpm dev
 ```
 
-### Manual
+### Build for Production
 
-1. Use `pnpm build` to generate `package.zip`
-2. Create a new Github release using your new version number as the "Tag version". See here for an example: https://github.com/siyuan-note/plugin-sample/releases
-3. Upload the file package.zip as binary attachments
-4. Publish the release
+```bash
+# Build production version
+pnpm build
 
-> [!NOTE]
-> If it is the first release, please create a pull request to the [Community Bazaar](https://github.com/siyuan-note/bazaar) repository and modify the plugins.json file in it. This file is the index of all community plugin repositories, the format is:
-
-```json
-{
-  "repos": [
-    "username/reponame"
-  ]
-}
+# Automatically create version and release
+pnpm release:patch  # Patch version 0.0.1 -> 0.0.2
+pnpm release:minor  # Minor version 0.0.1 -> 0.1.0
+pnpm release:major  # Major version 0.0.1 -> 1.0.0
 ```
+
+## 🛠️ Tech Stack
+
+- **Framework**: Vue 3 + TypeScript
+- **Build**: Vite 6
+- **Styling**: Tailwind CSS + SCSS
+- **Package Manager**: pnpm
+
+## 📝 Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for version update details.
+
+## 🤝 Contributing
+
+Issues and Pull Requests are welcome!
+
+## 📄 License
+
+[MIT License](./LICENSE)
+
+## 🙏 Acknowledgments
+
+- [SiYuan Note](https://github.com/siyuan-note/siyuan) - Excellent note-taking software
+- [plugin-sample-vite-vue](https://github.com/siyuan-note/plugin-sample-vite-vue) - Plugin template
 
 ---
 
-More other plugin info, please check in [siyuan/plugin-sample](https://github.com/siyuan-note/plugin-sample).
+If this plugin helps you, please Star ⭐ to support!

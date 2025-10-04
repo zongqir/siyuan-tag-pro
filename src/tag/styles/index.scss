@@ -1,9 +1,7 @@
-// Tailwind CSS
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/**
+ * 标签模块样式
+ */
 
-// Tag module styles - 内联以避免 @import 弃用警告
 /* 动画 */
 @keyframes fade-in {
   from {
@@ -86,7 +84,4 @@
   box-shadow: 0 6px 16px rgba(var(--b3-theme-error-rgb), 0.6);
 }
 
-// Plugin styles
-.plugin-sample-vite-vue-app {
-  // Your custom styles
-}
+
