@@ -1,6 +1,7 @@
 /**
  * 标签管理器
  * 负责标签添加和管理
+ * 重构：解耦职责，使用 DocumentStateManager，支持清理
  */
 
 import type { PresetTag } from '../types'
@@ -12,38 +13,22 @@ import {
   findBlockElement,
   hasComplexStyles,
 } from '../utils/dom'
-
-declare global {
-  interface Window {
-    siyuan?: any
-  }
-}
+import {
+  CONFIG,
+  hasTextSelection,
+} from '../utils/helpers'
+import { DocumentStateManager } from './DocumentStateManager'
 
 export class TagManager {
   private isInitialized = false
-  private debugMode = false
   private dialog: TagDialog
   private eventHandler: TagEventHandler
+  private stateManager: DocumentStateManager
 
   constructor() {
     this.dialog = new TagDialog()
     this.eventHandler = new TagEventHandler(this)
-  }
-
-  /**
-   * 开启调试模式
-   */
-  enableDebug(): void {
-    this.debugMode = true
-    Logger.log('✅ 调试模式已开启')
-  }
-
-  /**
-   * 关闭调试模式
-   */
-  disableDebug(): void {
-    this.debugMode = false
-    Logger.log('❌ 调试模式已关闭')
+    this.stateManager = new DocumentStateManager()
   }
 
   /**
@@ -52,12 +37,24 @@ export class TagManager {
   initialize(): void {
     Logger.log('🚀 标签管理器初始化...')
 
-    this.eventHandler.setupBlockClickListener()
-
+    // 使用更合理的延迟
     setTimeout(() => {
+      this.eventHandler.setupBlockClickListener()
       this.isInitialized = true
       Logger.log('✅ 标签管理器初始化完成')
-    }, 2000)
+    }, CONFIG.INIT_DELAY)
+  }
+
+  /**
+   * 清理资源
+   */
+  cleanup(): void {
+    Logger.log('🧹 开始清理 TagManager...')
+
+    this.eventHandler.cleanup()
+    this.isInitialized = false
+
+    Logger.log('✅ TagManager 已清理')
   }
 
   /**
@@ -84,8 +81,8 @@ export class TagManager {
     if (selectedTag) {
       Logger.log('📤 用户选择标签:', selectedTag.name)
 
-      // 检查文档状态
-      if (this.isDocumentEditable()) {
+      // 检查文档状态 - 使用 DocumentStateManager
+      if (this.stateManager.isEditable()) {
         Logger.error('🛡️ 文档处于可编辑状态，拒绝添加标签')
         this.dialog.showEditableWarning()
         return
@@ -93,27 +90,6 @@ export class TagManager {
 
       // 添加标签
       await this.performAddTag(blockElement, selectedTag)
-    }
-  }
-
-  /**
-   * 检查文档是否可编辑
-   */
-  private isDocumentEditable(): boolean {
-    try {
-      const editors = window.siyuan?.getAllEditor?.() || []
-
-      for (const editor of editors) {
-        if (editor?.protyle?.disabled === false) {
-          return true
-        }
-      }
-
-      return false
-    }
-    catch (error) {
-      Logger.error('检查文档状态失败:', error)
-      return false
     }
   }
 
@@ -178,44 +154,17 @@ export class TagManager {
     const blockElement = findBlockElement(target)
 
     if (blockElement) {
-      const selection = window.getSelection()
-      const selectedText = selection ? selection.toString().trim() : ''
-
-      if (selectedText.length > 0) {
+      // 检查文本选中
+      if (hasTextSelection()) {
         Logger.log('检测到文本选中，不显示标签面板')
         return
       }
 
-      // 检查只读状态
-      const isDocReadonly = this.isDocumentReadonly()
-
-      if (isDocReadonly) {
+      // 检查只读状态 - 使用 DocumentStateManager
+      if (this.stateManager.isReadonly()) {
         Logger.log('右键/长按无文本选中，显示标签面板')
         this.showTagPanel(blockElement)
       }
     }
   }
-
-  /**
-   * 检查文档是否只读
-   */
-  private isDocumentReadonly(): boolean {
-    try {
-      const editors = window.siyuan?.getAllEditor?.() || []
-
-      for (const editor of editors) {
-        if (editor?.protyle?.disabled === true) {
-          return true
-        }
-      }
-
-      return false
-    }
-    catch (error) {
-      Logger.error('检查只读状态失败:', error)
-      return false
-    }
-  }
 }
-
-

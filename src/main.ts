@@ -50,9 +50,26 @@ export function init(pluginInstance: Plugin) {
 }
 
 export function destroy() {
+  Logger.log('🧹 开始清理插件资源...')
+
+  // 清理 tag 模块（重要：先清理事件监听器）
+  if (tagManager) {
+    tagManager.cleanup()
+    tagManager = null
+  }
+
+  if (tagClickManager) {
+    tagClickManager.cleanup()
+    tagClickManager = null
+  }
+
+  // 清理 Vue 应用
   if (app) {
     app.unmount()
+    app = null
   }
+
+  // 清理 DOM
   const pluginInstance = usePlugin()
   if (pluginInstance) {
     const div = document.getElementById(pluginInstance.name)
@@ -61,7 +78,5 @@ export function destroy() {
     }
   }
 
-  // Clean up tag modules
-  tagManager = null
-  tagClickManager = null
+  Logger.log('✅ 插件资源清理完成')
 }
