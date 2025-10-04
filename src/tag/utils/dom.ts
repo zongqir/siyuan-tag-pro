@@ -62,7 +62,7 @@ export function hasComplexStyles(blockElement: HTMLElement): boolean {
 
     return false
   }
-  catch (error) {
+  catch {
     return true
   }
 }
@@ -190,7 +190,7 @@ export function extractTextContent(htmlContent: string): string {
     tempDiv.innerHTML = htmlContent
     return tempDiv.textContent || tempDiv.innerText || ''
   }
-  catch (error) {
+  catch {
     return htmlContent.replace(/<[^>]*>/g, '')
   }
 }

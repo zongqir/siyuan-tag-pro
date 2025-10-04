@@ -3,12 +3,17 @@
  * 负责处理标签点击后的搜索面板
  */
 
-import type { GroupedResults, SearchScope } from '../types'
-import { findTagElement, isInEditArea } from '../utils/dom'
-import Logger from '../utils/logger'
+import type {
+  SearchScope,
+} from '../types'
+import Logger from '../../utils/logger'
+import { TagSearchPanel } from '../ui/TagSearchPanel'
+import {
+  findTagElement,
+  isInEditArea,
+} from '../utils/dom'
 import { TagRenderer } from './TagRenderer'
 import { TagSearch } from './TagSearch'
-import { TagSearchPanel } from '../ui/TagSearchPanel'
 
 export class TagClickManager {
   private isInitialized = false

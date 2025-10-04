@@ -1,18 +1,21 @@
 import {
-  Plugin,
   getFrontend,
-} from "siyuan";
-import "@/index.scss";
+  Plugin,
+} from "siyuan"
 import PluginInfoString from '@/../plugin.json'
-import { destroy, init } from '@/main'
+import {
+  destroy,
+  init,
+} from '@/main'
+import "@/index.scss"
 
 let PluginInfo = {
   version: '',
 }
 try {
   PluginInfo = PluginInfoString
-} catch (err) {
-  console.log('Plugin info parse error: ', err)
+} catch (error) {
+  console.log('Plugin info parse error: ', error)
 }
 const {
   version,
@@ -33,7 +36,7 @@ export default class PluginSample extends Plugin {
   public readonly version = version
 
   async onload() {
-    const frontEnd = getFrontend();
+    const frontEnd = getFrontend()
     this.platform = frontEnd as SyFrontendTypes
     this.isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile"
     this.isBrowser = frontEnd.includes('browser')
@@ -46,7 +49,7 @@ export default class PluginSample extends Plugin {
       require("@electron/remote")
         .require("@electron/remote/main")
       this.isElectron = true
-    } catch (err) {
+    } catch {
       this.isElectron = false
     }
 

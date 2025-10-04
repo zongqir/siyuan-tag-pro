@@ -3,8 +3,8 @@
  * 负责处理标签相关的DOM事件
  */
 
-import Logger from '../utils/logger'
 import type { TagManager } from '../core/TagManager'
+import Logger from '../../utils/logger'
 
 export class TagEventHandler {
   private manager: TagManager
@@ -59,11 +59,17 @@ export class TagEventHandler {
     document.addEventListener('touchstart', () => {
       touchStartTime = Date.now()
       hasMoved = false
-    }, { passive: true, capture: true })
+    }, {
+      passive: true,
+      capture: true,
+    })
 
     document.addEventListener('touchmove', () => {
       hasMoved = true
-    }, { passive: true, capture: true })
+    }, {
+      passive: true,
+      capture: true,
+    })
 
     document.addEventListener('touchend', (e) => {
       const target = e.target as HTMLElement
@@ -127,7 +133,10 @@ export class TagEventHandler {
           Logger.log('📱 记录第一次点击')
         }
       }
-    }, { passive: false, capture: true })
+    }, {
+      passive: false,
+      capture: true,
+    })
   }
 }
 

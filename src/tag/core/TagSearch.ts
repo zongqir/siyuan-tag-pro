@@ -3,11 +3,16 @@
  * 负责标签搜索和结果分组
  */
 
+import type {
+  DocInfo,
+  GroupedResults,
+  SearchScope,
+  TagSearchResult,
+} from '../types'
 import { fetchSyncPost } from 'siyuan'
-import type { DocInfo, GroupedResults, SearchScope, TagSearchResult } from '../types'
+import Logger from '../../utils/logger'
 import { extractTextContent } from '../utils/dom'
 import { extractDocName } from '../utils/format'
-import Logger from '../utils/logger'
 
 declare global {
   interface Window {
@@ -309,7 +314,7 @@ export class TagSearch {
       Logger.log('🔍 开始搜索标签:', tagText, '范围:', scope)
 
       // 清理标签文本
-      let cleanedText = tagText
+      const cleanedText = tagText
         .replace(/[\u200B-\u200D\uFEFF]/g, '')
         .replace(/\u00A0/g, ' ')
         .trim()

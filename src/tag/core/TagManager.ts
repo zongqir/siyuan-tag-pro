@@ -4,11 +4,14 @@
  */
 
 import type { PresetTag } from '../types'
+import Logger from '../../utils/logger'
 import { PRESET_TAGS } from '../constants/presetTags'
-import { findBlockElement, hasComplexStyles } from '../utils/dom'
-import Logger from '../utils/logger'
 import { TagDialog } from '../ui/TagDialog'
 import { TagEventHandler } from '../ui/TagEventHandler'
+import {
+  findBlockElement,
+  hasComplexStyles,
+} from '../utils/dom'
 
 declare global {
   interface Window {
@@ -64,7 +67,10 @@ export class TagManager {
     const blockId = blockElement.getAttribute('data-node-id')
     const blockText = blockElement.textContent?.substring(0, 50) || ''
 
-    Logger.log('显示标签面板:', { blockId, blockText })
+    Logger.log('显示标签面板:', {
+      blockId,
+      blockText,
+    })
 
     // 检查复杂样式
     if (hasComplexStyles(blockElement)) {
@@ -132,7 +138,7 @@ export class TagManager {
 
       // 获取当前HTML内容
       let currentHTML = contentDiv.innerHTML.trim()
-      currentHTML = currentHTML.replace(/​+$/, '') // 移除零宽空格
+      currentHTML = currentHTML.replace(/\u200B+$/, '') // 移除零宽空格
 
       // 构建标签DOM
       const tagContent = `${tag.emoji}${tag.name}`
@@ -151,7 +157,7 @@ export class TagManager {
 
       // 更新块
       const { updateBlock } = await import('../../api')
-      const result = await updateBlock('dom', newContent, blockId)
+      await updateBlock('dom', newContent, blockId)
 
       Logger.log('✅ 标签添加成功:', {
         blockId,

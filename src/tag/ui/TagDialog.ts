@@ -4,7 +4,6 @@
  */
 
 import type { PresetTag } from '../types'
-import Logger from '../utils/logger'
 
 export class TagDialog {
   /**
@@ -143,7 +142,7 @@ export class TagDialog {
           tagButton.style.transform = 'scale(0.96)'
           setTimeout(() => {
             resolve(tag)
-            cleanup()
+            overlay.remove()
           }, 120)
         })
 

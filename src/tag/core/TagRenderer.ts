@@ -3,9 +3,16 @@
  * 负责渲染标签搜索结果
  */
 
-import type { GroupedResults, TagSearchResult } from '../types'
-import { extractTextContent, formatTimestamp, highlightTag } from '../utils/format'
-import Logger from '../utils/logger'
+import type {
+  GroupedResults,
+  TagSearchResult,
+} from '../types'
+import Logger from '../../utils/logger'
+import {
+  extractTextContent,
+  formatTimestamp,
+  highlightTag,
+} from '../utils/format'
 
 export class TagRenderer {
   private collapsedNodes = new Set<string>()

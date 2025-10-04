@@ -126,7 +126,10 @@ src/tag/
 ## 使用方式
 
 ```typescript
-import { TagManager, TagClickManager } from './tag'
+import {
+  TagClickManager,
+  TagManager,
+} from './tag'
 
 // 初始化标签管理器
 const tagManager = new TagManager()
@@ -188,7 +191,12 @@ tagClickManager.enableDebug()
 ```typescript
 export const PRESET_TAGS: readonly PresetTag[] = [
   // 现有标签...
-  { id: 'new-tag', name: '新标签', color: '#ff0000', emoji: '🔥' },
+  {
+    id: 'new-tag',
+    name: '新标签',
+    color: '#ff0000',
+    emoji: '🔥',
+  },
 ]
 ```
 

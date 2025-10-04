@@ -70,8 +70,8 @@
       </SyButton>
 
       <Teleport
-        :to="statusRef"
         v-if="statusRef"
+        :to="statusRef"
       >
         <SyIcon
           name="iconHeart"
@@ -85,6 +85,11 @@
 </template>
 
 <script setup lang="ts">
+import {
+  onMounted,
+  ref,
+  watchEffect,
+} from 'vue'
 import SyButton from '@/components/SiyuanTheme/SyButton.vue'
 import SyCheckbox from '@/components/SiyuanTheme/SyCheckbox.vue'
 import SyIcon from '@/components/SiyuanTheme/SyIcon.vue'
@@ -92,7 +97,6 @@ import SyInput from '@/components/SiyuanTheme/SyInput.vue'
 import SySelect from '@/components/SiyuanTheme/SySelect.vue'
 import SyTextarea from '@/components/SiyuanTheme/SyTextarea.vue'
 import { usePlugin } from '@/main'
-import { onMounted, ref, watchEffect } from 'vue'
 
 
 const isChecked = ref(false)
@@ -101,24 +105,33 @@ const inputValue = ref('')
 
 const selectValue = ref()
 const selectOptions = ref([
-  { value: '1', text: 'Option 1' },
-  { value: '2', text: 'Option 2' },
-  { value: '3', text: 'Option 3' },
+  {
+    value: '1',
+    text: 'Option 1',
+  },
+  {
+    value: '2',
+    text: 'Option 2',
+  },
+  {
+    value: '3',
+    text: 'Option 3',
+  },
 ])
 
 const textareaValue = ref('')
 
 const showAllValues = () => {
-  alert(`
-    isChecked: ${isChecked.value}
-    inputValue: ${inputValue.value}
-    selectValue: ${selectValue.value}
-    textareaValue: ${textareaValue.value}
-  `)
+  console.log('[Demo] Values:', {
+    isChecked: isChecked.value,
+    inputValue: inputValue.value,
+    selectValue: selectValue.value,
+    textareaValue: textareaValue.value,
+  })
 }
 
 const openSetting = () => {
-  alert('Need open plugin setting.')
+  console.log('[Demo] Need open plugin setting.')
 }
 
 const plugin = usePlugin()
@@ -130,7 +143,7 @@ plugin.addTopBar({
   icon: 'iconHeart',
   title: 'Plugin Sample',
   callback: () => {
-    alert('Hello Siyuan.')
+    console.log('[Demo] Hello Siyuan.')
   },
 })
 

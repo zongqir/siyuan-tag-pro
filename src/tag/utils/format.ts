@@ -19,7 +19,7 @@ export function formatTimestamp(timestamp: string): string {
 
     return `${year}/${month}/${day} ${hour}:${minute}`
   }
-  catch (error) {
+  catch {
     return timestamp
   }
 }
@@ -58,7 +58,7 @@ export function extractDocName(hpath: string): string {
 export function extractTextContent(html: string): string {
   if (!html)
     return ''
-  
+
   // 创建临时DOM元素来解析HTML
   const div = document.createElement('div')
   div.innerHTML = html

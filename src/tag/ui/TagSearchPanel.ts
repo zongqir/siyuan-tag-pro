@@ -3,9 +3,12 @@
  * 负责显示标签搜索结果面板
  */
 
-import type { GroupedResults, SearchScope } from '../types'
+import type {
+  GroupedResults,
+  SearchScope,
+} from '../types'
+import Logger from '../../utils/logger'
 import { TagRenderer } from '../core/TagRenderer'
-import Logger from '../utils/logger'
 
 export class TagSearchPanel {
   private renderer: TagRenderer
@@ -98,7 +101,6 @@ export class TagSearchPanel {
     onScopeChange: (scope: SearchScope) => void,
     onTagChange: (tag: string) => void,
   ): HTMLElement {
-    const isMobile = window.innerWidth <= 768
     const header = document.createElement('div')
     header.className = `p-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white`
 
@@ -174,9 +176,18 @@ export class TagSearchPanel {
     container.className = 'flex gap-1 flex-shrink-0'
 
     const scopes: Array<{ value: SearchScope, label: string }> = [
-      { value: 'doc', label: '本文档' },
-      { value: 'subdocs', label: '子文档' },
-      { value: 'notebook', label: '笔记本' },
+      {
+        value: 'doc',
+        label: '本文档',
+      },
+      {
+        value: 'subdocs',
+        label: '子文档',
+      },
+      {
+        value: 'notebook',
+        label: '笔记本',
+      },
     ]
 
     scopes.forEach((scopeOption) => {
