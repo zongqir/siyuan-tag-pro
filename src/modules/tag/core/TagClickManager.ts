@@ -9,43 +9,35 @@ import type {
 } from '../types'
 import Logger from '@shared/utils/logger'
 import { TagSearchPanel } from '../ui/TagSearchPanel'
-import {
-  findTagElement,
-  isInEditArea,
-} from '../utils/dom'
-import { CONFIG } from '../utils/helpers'
 import { EventManager } from './EventManager'
-import { TagRenderer } from './TagRenderer'
 import { TagSearch } from './TagSearch'
 
 export class TagClickManager {
   private isInitialized = false
   private currentScope: SearchScope = 'notebook'
   private searchManager: TagSearch
-  private renderer: TagRenderer
   private panel: TagSearchPanel
   private eventManager: EventManager
 
   constructor() {
     this.searchManager = new TagSearch()
-    this.renderer = new TagRenderer()
     this.panel = new TagSearchPanel()
     this.eventManager = new EventManager()
   }
 
   /**
    * 初始化
+   * 注意：已禁用自动点击监听，面板功能保留供外部调用
    */
   initialize(): void {
     if (this.isInitialized) {
       return
     }
 
-    setTimeout(() => {
-      this.setupTagClickListener()
-      this.isInitialized = true
-      Logger.log('✅ 标签点击管理器初始化完成')
-    }, CONFIG.INIT_DELAY)
+    // 不再自动注册点击监听器
+    // this.setupTagClickListener()
+    this.isInitialized = true
+    Logger.log('✅ 标签点击管理器初始化完成（点击监听已禁用）')
   }
 
   /**
@@ -61,85 +53,10 @@ export class TagClickManager {
   }
 
   /**
-   * 设置标签点击监听
-   * 优化：只监听编辑区域，而不是整个 document
-   */
-  private setupTagClickListener(): void {
-    // 使用事件委托，监听 click 事件
-    this.eventManager.addEventListener(
-      document,
-      'click',
-      this.handleClick.bind(this),
-      { capture: true },
-    )
-
-    // 监听 mousedown 防止默认行为
-    this.eventManager.addEventListener(
-      document,
-      'mousedown',
-      this.handleMouseDown.bind(this),
-      { capture: true },
-    )
-
-    Logger.log('✅ 标签点击监听已注册')
-  }
-
-  /**
-   * 处理点击事件
-   */
-  private handleClick(e: Event): void {
-    const event = e as MouseEvent
-    const target = event.target as HTMLElement
-
-    // 快速判断：不在编辑区域直接返回
-    if (!isInEditArea(target)) {
-      return
-    }
-
-    const tagElement = findTagElement(target)
-
-    if (tagElement) {
-      Logger.log('🏷️ 检测到标签点击')
-
-      event.preventDefault()
-      event.stopPropagation()
-      event.stopImmediatePropagation()
-
-      const tagText = tagElement.textContent?.trim() || ''
-      Logger.log('标签内容:', tagText)
-
-      // 异步显示面板，避免阻塞
-      setTimeout(() => {
-        this.showTagSearchPanel(tagText)
-      }, 0)
-    }
-  }
-
-  /**
-   * 处理 mousedown 事件
-   */
-  private handleMouseDown(e: Event): void {
-    const event = e as MouseEvent
-    const target = event.target as HTMLElement
-
-    // 快速判断：不在编辑区域直接返回
-    if (!isInEditArea(target)) {
-      return
-    }
-
-    const tagElement = findTagElement(target)
-
-    if (tagElement) {
-      event.preventDefault()
-      event.stopPropagation()
-      event.stopImmediatePropagation()
-    }
-  }
-
-  /**
    * 显示标签搜索面板
+   * 公开方法，供外部调用
    */
-  private async showTagSearchPanel(
+  public async showTagSearchPanel(
     tagText: string,
     scope: SearchScope = this.currentScope,
     availableTags?: string[],

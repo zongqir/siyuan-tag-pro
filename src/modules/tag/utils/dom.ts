@@ -69,6 +69,7 @@ export function hasComplexStyles(blockElement: HTMLElement): boolean {
 
 /**
  * 检查是否在编辑区域内
+ * 使用白名单方式：只允许在 protyle-wysiwyg 或 protyle-content 容器内
  */
 export function isInEditArea(element: HTMLElement): boolean {
   let current: HTMLElement | null = element
@@ -77,27 +78,17 @@ export function isInEditArea(element: HTMLElement): boolean {
 
   while (current && depth < maxDepth) {
     const className = String(current.className || '')
-    const id = String(current.id || '')
 
-    // 检查是否在编辑区域
+    // 白名单：只要在这些编辑器容器内就认为是编辑区域
     if (
       className.includes('protyle-wysiwyg')
       || className.includes('protyle-content')
-      || (className.includes('protyle') && className.includes('fn__flex-1'))
     ) {
       return true
     }
 
-    // 排除系统UI区域
-    if (
-      className.includes('toolbar')
-      || className.includes('dock')
-      || className.includes('fn__flex-shrink')
-      || className.includes('layout__wnd')
-      || className.includes('block__icon')
-      || id.includes('toolbar')
-      || id.includes('dock')
-    ) {
+    // 到达 body 标签停止查找
+    if (current.tagName === 'BODY') {
       return false
     }
 
@@ -134,6 +125,7 @@ export function findTagElement(element: HTMLElement): HTMLElement | null {
 
 /**
  * 判断是否是文档中的真实标签
+ * 使用白名单方式：只认可在编辑区内的标签元素
  */
 function isDocumentTag(
   element: HTMLElement,
@@ -141,38 +133,25 @@ function isDocumentTag(
   className: string,
   textContent: string,
 ): boolean {
-  // SiYuan标签
+  // 白名单：必须在编辑区域内
+  const editorContainer = element.closest('.protyle-wysiwyg, .protyle-content')
+  if (!editorContainer) {
+    return false
+  }
+
+  // 1. SiYuan 官方标签格式：data-type="tag"
   if (dataType === 'tag') {
     return true
   }
 
-  // 排除系统UI元素
-  if (
-    className.includes('toolbar')
-    || className.includes('dock')
-    || className.includes('menu')
-    || className.includes('dialog')
-    || className.includes('breadcrumb')
-    || className.includes('layout-tab-container')
-    || className.includes('file-tree')
-    || className.includes('sy__backlink')
-  ) {
-    return false
-  }
-
-  // #标签#格式
+  // 2. #标签# 格式
   if (element.tagName === 'SPAN' && textContent.match(/^#[^#\s<>]+#$/)) {
-    const parentContainer = element.closest('.protyle-wysiwyg, .protyle-content')
-    if (parentContainer) {
-      return true
-    }
+    return true
   }
 
-  // className包含tag的情况
+  // 3. className 包含 'tag' 的情况
   if (className.includes('tag')) {
-    if (element.closest('.protyle-wysiwyg, .protyle-content')) {
-      return true
-    }
+    return true
   }
 
   return false
