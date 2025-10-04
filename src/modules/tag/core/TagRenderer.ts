@@ -7,7 +7,7 @@ import type {
   GroupedResults,
   TagSearchResult,
 } from '../types'
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 import {
   extractTextContent,
   formatTimestamp,

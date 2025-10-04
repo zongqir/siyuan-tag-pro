@@ -7,7 +7,7 @@ import type {
   GroupedResults,
   SearchScope,
 } from '../types'
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 import { TagRenderer } from '../core/TagRenderer'
 
 export class TagSearchPanel {

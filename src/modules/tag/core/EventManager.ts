@@ -3,7 +3,7 @@
  * 统一管理所有事件监听器，确保可以正确清理，防止内存泄漏
  */
 
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 
 interface EventListener {
   target: EventTarget

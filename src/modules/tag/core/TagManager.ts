@@ -5,7 +5,7 @@
  */
 
 import type { PresetTag } from '../types'
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 import { PRESET_TAGS } from '../constants/presetTags'
 import { TagDialog } from '../ui/TagDialog'
 import { TagEventHandler } from '../ui/TagEventHandler'
@@ -132,7 +132,7 @@ export class TagManager {
       Logger.log('新DOM内容:', newContent)
 
       // 更新块
-      const { updateBlock } = await import('../../api')
+      const { updateBlock } = await import('@shared/api')
       await updateBlock('dom', newContent, blockId)
 
       Logger.log('✅ 标签添加成功:', {

@@ -9,8 +9,8 @@ import type {
   SearchScope,
   TagSearchResult,
 } from '../types'
+import Logger from '@shared/utils/logger'
 import { fetchSyncPost } from 'siyuan'
-import Logger from '../../utils/logger'
 import { extractTextContent } from '../utils/dom'
 import { extractDocName } from '../utils/format'
 

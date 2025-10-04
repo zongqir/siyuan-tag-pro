@@ -5,7 +5,7 @@
  */
 
 import type { TagManager } from '../core/TagManager'
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 import { EventManager } from '../core/EventManager'
 import {
   CONFIG,

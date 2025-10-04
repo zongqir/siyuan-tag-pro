@@ -7,7 +7,7 @@
 import type {
   SearchScope,
 } from '../types'
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 import { TagSearchPanel } from '../ui/TagSearchPanel'
 import {
   findTagElement,

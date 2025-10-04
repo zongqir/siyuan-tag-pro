@@ -47,6 +47,8 @@ export default defineConfig(({
     resolve: {
       alias: {
         "@": resolve(__dirname, "src"),
+        "@shared": resolve(__dirname, "src/shared"),
+        "@modules": resolve(__dirname, "src/modules"),
       },
     },
 
@@ -71,7 +73,7 @@ export default defineConfig(({
             dest: "./",
           },
           {
-            src: "./src/i18n/**",
+            src: "./src/shared/i18n/**",
             dest: "./i18n/",
           },
         ],
@@ -118,7 +120,7 @@ export default defineConfig(({
                   name: "watch-external",
                   async buildStart() {
                     const files = await fg([
-                      "src/i18n/*.json",
+                      "src/shared/i18n/*.json",
                       "./README*.md",
                       "./plugin.json",
                     ])

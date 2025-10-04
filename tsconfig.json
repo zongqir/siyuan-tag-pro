@@ -14,7 +14,9 @@
     "moduleResolution": "Node",
     "paths": {
       "@/*": ["./src/*"],
-      "@/libs/*": ["./src/libs/*"]
+      "@/libs/*": ["./src/libs/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@modules/*": ["./src/modules/*"]
     },
     "resolveJsonModule": true,
     "types": [

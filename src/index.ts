@@ -1,3 +1,4 @@
+import Logger from '@shared/utils/logger'
 import {
   getFrontend,
   Plugin,
@@ -7,7 +8,6 @@ import {
   destroy,
   init,
 } from '@/main'
-import Logger from '@/utils/logger'
 import "@/index.scss"
 
 let PluginInfo = {

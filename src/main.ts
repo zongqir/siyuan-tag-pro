@@ -1,13 +1,13 @@
 import type {
   Plugin,
 } from 'siyuan'
-import { createApp } from 'vue'
-import App from './App.vue'
 import {
   TagClickManager,
   TagManager,
-} from './tag'
-import Logger from './utils/logger'
+} from '@modules/tag'
+import Logger from '@shared/utils/logger'
+import { createApp } from 'vue'
+import App from './App.vue'
 
 let plugin = null
 let tagManager: TagManager | null = null

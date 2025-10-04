@@ -3,7 +3,7 @@
  * 统一管理文档只读/可编辑状态检查，避免重复代码
  */
 
-import Logger from '../../utils/logger'
+import Logger from '@shared/utils/logger'
 
 declare global {
   interface Window {
