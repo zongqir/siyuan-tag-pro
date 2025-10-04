@@ -21,7 +21,6 @@ import {
 import { DocumentStateManager } from './DocumentStateManager'
 
 export class TagManager {
-  private isInitialized = false
   private dialog: TagDialog
   private eventHandler: TagEventHandler
   private stateManager: DocumentStateManager
@@ -41,7 +40,6 @@ export class TagManager {
     // 使用更合理的延迟
     setTimeout(() => {
       this.eventHandler.setupBlockClickListener()
-      this.isInitialized = true
       Logger.log('✅ 标签管理器初始化完成')
     }, CONFIG.INIT_DELAY)
   }
@@ -53,7 +51,6 @@ export class TagManager {
     Logger.log('🧹 开始清理 TagManager...')
 
     this.eventHandler.cleanup()
-    this.isInitialized = false
 
     Logger.log('✅ TagManager 已清理')
   }
@@ -82,15 +79,61 @@ export class TagManager {
     if (selectedTag) {
       Logger.log('📤 用户选择标签:', selectedTag.name)
 
-      // 检查文档状态 - 使用 DocumentStateManager
-      if (this.stateManager.isEditable()) {
-        Logger.error('🛡️ 文档处于可编辑状态，拒绝添加标签')
-        this.dialog.showEditableWarning()
-        return
-      }
+      const initialState = this.stateManager.getState()
+      const wasReadonly = initialState === 'readonly'
+      
+      console.log('═══════════════════════════════════════════════════')
+      console.log('🔍 添加标签流程开始')
+      console.log('  当前状态:', wasReadonly ? '🔒 只读' : '✏️ 编辑')
+      console.log('═══════════════════════════════════════════════════')
 
-      // 添加标签
-      await this.performAddTag(blockElement, selectedTag)
+      try {
+        // 如果是只读模式，先解锁
+        if (wasReadonly) {
+          console.log('🔓 步骤1: 检测到只读模式，正在解锁...')
+          await this.stateManager.toggleReadonly()
+          console.log('✅ 已解锁')
+        }
+        else {
+          console.log('✏️ 步骤1: 已是编辑模式，无需解锁')
+        }
+
+        // 添加标签
+        console.log('🏷️ 步骤2: 正在添加标签...')
+        await this.performAddTag(blockElement, selectedTag)
+        console.log('✅ 标签已添加')
+
+        // 如果原来是只读模式，重新加锁
+        if (wasReadonly) {
+          console.log('🔒 步骤3: 恢复只读模式，正在加锁...')
+          await this.stateManager.toggleReadonly()
+          console.log('✅ 已加锁')
+        }
+        else {
+          console.log('✏️ 步骤3: 保持编辑模式，无需加锁')
+        }
+
+        console.log('═══════════════════════════════════════════════════')
+        console.log('✅ 添加标签流程完成')
+        console.log('═══════════════════════════════════════════════════')
+      }
+      catch (error) {
+        console.error('❌ 添加标签失败:', error)
+        
+        // 如果失败了且原来是只读模式，尝试恢复加锁状态
+        if (wasReadonly) {
+          console.log('🔄 尝试恢复只读模式...')
+          try {
+            await this.stateManager.toggleReadonly()
+            console.log('✅ 已恢复只读模式')
+          }
+          catch (restoreError) {
+            console.error('❌ 恢复只读模式失败:', restoreError)
+          }
+        }
+        
+        throw error
+      }
     }
   }
 
