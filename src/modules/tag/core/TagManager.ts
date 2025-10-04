@@ -6,6 +6,7 @@
 
 import type { PresetTag } from '../types'
 import Logger from '@shared/utils/logger'
+import { updateBlock } from '@shared/api'
 import { PRESET_TAGS } from '../constants/presetTags'
 import { TagDialog } from '../ui/TagDialog'
 import { TagEventHandler } from '../ui/TagEventHandler'
@@ -132,7 +133,6 @@ export class TagManager {
       Logger.log('新DOM内容:', newContent)
 
       // 更新块
-      const { updateBlock } = await import('@shared/api')
       await updateBlock('dom', newContent, blockId)
 
       Logger.log('✅ 标签添加成功:', {
@@ -160,11 +160,9 @@ export class TagManager {
         return
       }
 
-      // 检查只读状态 - 使用 DocumentStateManager
-      if (this.stateManager.isReadonly()) {
-        Logger.log('右键/长按无文本选中，显示标签面板')
-        this.showTagPanel(blockElement)
-      }
+      // 显示标签面板（不再检查只读状态，在添加时检查）
+      Logger.log('显示标签面板')
+      this.showTagPanel(blockElement)
     }
   }
 }

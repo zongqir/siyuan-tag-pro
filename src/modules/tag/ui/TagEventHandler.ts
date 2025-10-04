@@ -6,7 +6,9 @@
 
 import type { TagManager } from '../core/TagManager'
 import Logger from '@shared/utils/logger'
+import { DocumentStateManager } from '../core/DocumentStateManager'
 import { EventManager } from '../core/EventManager'
+import { findBlockElement } from '../utils/dom'
 import {
   CONFIG,
   hasTextSelection,
@@ -16,6 +18,7 @@ import {
 export class TagEventHandler {
   private manager: TagManager
   private eventManager: EventManager
+  private stateManager: DocumentStateManager
 
   // 移动端状态
   private lastTouchTime = 0
@@ -27,6 +30,7 @@ export class TagEventHandler {
   constructor(manager: TagManager) {
     this.manager = manager
     this.eventManager = new EventManager()
+    this.stateManager = new DocumentStateManager()
   }
 
   /**
@@ -66,14 +70,29 @@ export class TagEventHandler {
 
     // 检查文本选中
     if (hasTextSelection()) {
-      Logger.log('检测到文本选中，不显示标签面板')
+      Logger.log('检测到文本选中，允许正常右键菜单')
       return
     }
 
-    event.preventDefault()
-    event.stopPropagation()
+    // 检查是否点击在块元素上
+    const blockElement = findBlockElement(target)
+    
+    if (!blockElement) {
+      Logger.log('未找到块元素，允许正常右键菜单')
+      return
+    }
 
-    this.manager.onBlockClick(target)
+    // 检查是否按住 Ctrl/Cmd 键
+    if (event.ctrlKey || event.metaKey) {
+      Logger.log('✅ Ctrl/Cmd + 右键，显示标签面板')
+      event.preventDefault()
+      event.stopPropagation()
+      this.manager.onBlockClick(target)
+    }
+    else {
+      Logger.log('⏩ 普通右键，允许正常的右键菜单')
+      // 不阻止默认行为，让系统右键菜单正常显示
+    }
   }
 
   /**
@@ -171,7 +190,6 @@ export class TagEventHandler {
     }
 
     // 查找块元素
-    const { findBlockElement } = require('../utils/dom')
     const blockElement = findBlockElement(target)
 
     if (blockElement) {
